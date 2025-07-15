@@ -3,15 +3,14 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/store/auth';
 import FormField from '@/components/ui/FormField';
 import Button from '@/components/ui/Button';
 import { CircleArrowRight, Mail, Lock } from 'lucide-react';
 import Link from 'next/link';
+import { login } from '@/services/auth';
 
 export default function LoginPage() {
     const router = useRouter();
-    const { login, loading } = useAuthStore();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState<{
@@ -20,6 +19,7 @@ export default function LoginPage() {
         password?: string;
         general?: string;
     }>({});
+    const [loading, setLoading] = useState(false);
 
     const validate = () => {
         const newErrors: typeof errors = {};
@@ -43,17 +43,22 @@ export default function LoginPage() {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setErrors({});
+        setLoading(true)
 
         if (!validate()) {
             return;
         }
 
         try {
-            await login(email, password);
+            console.log('Mulai Login')
+            await login({ email, password });
+            console.log('Selesai Login')
+            setLoading(false)
             router.push('/dashboard');
         } catch (err) {
             const error = err as any;
             setErrors({ general: error.response?.data?.message || 'Email atau password salah' });
+            setLoading(false)
         }
     };
 
@@ -106,6 +111,9 @@ export default function LoginPage() {
                     Belum punya akun?{' '}
                     <Link href="/register" className="text-blue-600 hover:underline font-medium">Daftar di sini</Link>
                 </p>
+                <p>
+                        <Link href="/forgot-password" className="text-blue-600 hover:underline text-sm">Lupa password?</Link>
+                    </p>
             </form>
         </div>
     );

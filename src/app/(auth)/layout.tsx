@@ -1,32 +1,9 @@
 // src/app/(auth)/layout.tsx
 'use client';
 
-import React, { useEffect } from 'react';
-import { useAuthStore } from '@/store/auth';
-import { useRouter } from 'next/navigation';
-import PageLoader from '@/components/ui/PageLoader';
+import React from 'react';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
-    const { isAuthenticated, _hasHydrated } = useAuthStore();
-    const router = useRouter();
-
-    useEffect(() => {
-        // Tunggu sampai store terhidrasi
-        if (!_hasHydrated) {
-            return;
-        }
-
-        // Jika pengguna sudah login, arahkan ke dashboard
-        if (isAuthenticated) {
-            router.replace('/dashboard');
-        }
-    }, [isAuthenticated, _hasHydrated, router]);
-
-    // Selama proses hidrasi, atau jika pengguna sudah login (dan akan diarahkan),
-    // tampilkan layar loading untuk mencegah "flash" halaman login.
-    if (!_hasHydrated || isAuthenticated) {
-        return <PageLoader />;
-    }
     
     return (
         <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-100 to-blue-200 px-4 text-gray-700">

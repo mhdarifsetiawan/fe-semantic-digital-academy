@@ -1,20 +1,39 @@
-// src/middleware.ts
+// ============================
+// middleware.ts
+// ============================
+
 import { NextRequest, NextResponse } from 'next/server';
+import { isAuthPath, isProtectedPath } from './lib/authh/routeUtils';
 
 export function middleware(request: NextRequest) {
-    const accessToken = request.cookies.get('accessToken')?.value;
+  const token = request.cookies.get('accessToken')?.value;
+  const { pathname } = request.nextUrl;
 
-    console.log('🔒 Token dari cookie:', accessToken); // ⬅️ lihat di terminal (bukan browser)
-    
-    // Jika tidak ada token, redirect ke /login
-    if (!accessToken) {
-        return NextResponse.redirect(new URL('/login', request.url));
-    }
+  // Tambahan debug untuk development
+  const res = NextResponse.next();
+  res.headers.set('x-middleware-debug', 'true');
+  res.headers.set('x-token', token ? 'present' : 'none');
+  res.headers.set('x-pathname', pathname);
 
-    return NextResponse.next(); // lanjutkan ke route tujuan
+  // ⛔ Sudah login dan akses halaman auth
+  if (token && isAuthPath(pathname)) {
+    return NextResponse.redirect(new URL('/dashboard', request.url));
+  }
+
+  // 🔐 Belum login dan akses halaman protected
+  if (!token && isProtectedPath(pathname)) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  return res;
 }
 
-// Tentukan halaman yang butuh proteksi
 export const config = {
-    matcher: ['/dashboard'], // bisa tambah: ['/dashboard', '/admin', ...]
+  matcher: [
+    '/login',
+    '/register',
+    '/(auth)(.*)',
+    '/(protected)(.*)',
+    '/dashboard',
+  ],
 };

@@ -1,3 +1,4 @@
+import API_ROUTES from "@/constants/apiRoutes";
 import api from "@/lib/api";
 
 /**
@@ -14,7 +15,7 @@ interface LoginCredentials {
 export const login = async (credentials: LoginCredentials) => {
     try {
         // Panggil API dan langsung kembalikan datanya
-        const response = await api.post('/login', credentials);
+        const response = await api.post(API_ROUTES.LOGIN, credentials);
         return response.data;
     } catch (error) {
         // Jika terjadi error, lempar kembali agar bisa ditangani oleh pemanggil
@@ -26,7 +27,7 @@ export const login = async (credentials: LoginCredentials) => {
 // Fungsi logout
 export const logout = async () => {
     try {
-        const response = await api.post('/logout');
+        const response = await api.post(API_ROUTES.LOGOUT);
         return response.data;
     } catch (error) {
         console.error('Logout service error:', error);
@@ -34,3 +35,13 @@ export const logout = async () => {
         // di sisi client bahkan jika server gagal merespons.
     }
 };
+
+export async function forgotPassword(email: string) {
+    const res = await api.post(API_ROUTES.FORGOT_PASSWORD, { email });
+    return res.data;
+}
+
+export async function resetPassword(token: string, newPassword: string) {
+    const res = await api.post(`${API_ROUTES.RESET_PASSWORD}/${token}`, { password: newPassword });
+    return res.data;
+}
