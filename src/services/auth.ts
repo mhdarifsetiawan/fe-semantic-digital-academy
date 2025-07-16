@@ -1,5 +1,6 @@
 import API_ROUTES from "@/constants/apiRoutes";
 import api from "@/lib/api";
+import { resetAuthClientSide } from "@/lib/auth/resetAuth";
 
 /**
  * Service untuk otentikasi
@@ -14,12 +15,22 @@ interface LoginCredentials {
 // Fungsi login yang lebih bersih
 export const login = async (credentials: LoginCredentials) => {
     try {
-        // Panggil API dan langsung kembalikan datanya
         const response = await api.post(API_ROUTES.LOGIN, credentials);
+
+        // ✅ Simpan flag login di localStorage
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('isAuthenticated', 'true');
+        }
+
         return response.data;
     } catch (error) {
-        // Jika terjadi error, lempar kembali agar bisa ditangani oleh pemanggil
         console.error('Login service error:', error);
+
+        // Pastikan flag login dibersihkan jika gagal
+        if (typeof window !== 'undefined') {
+            localStorage.removeItem('isAuthenticated');
+        }
+
         throw error;
     }
 };
@@ -28,13 +39,13 @@ export const login = async (credentials: LoginCredentials) => {
 export const logout = async () => {
     try {
         const response = await api.post(API_ROUTES.LOGOUT);
+        await resetAuthClientSide();
         return response.data;
     } catch (error) {
         console.error('Logout service error:', error);
-        // Tidak perlu melempar error di sini, karena logout harusnya tidak gagal
-        // di sisi client bahkan jika server gagal merespons.
     }
 };
+
 
 export async function forgotPassword(email: string) {
     const res = await api.post(API_ROUTES.FORGOT_PASSWORD, { email });

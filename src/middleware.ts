@@ -1,9 +1,9 @@
 // ============================
-// middleware.ts
+// src/middleware.ts
 // ============================
 
 import { NextRequest, NextResponse } from 'next/server';
-import { isAuthPath, isProtectedPath } from './lib/authh/routeUtils';
+import { isAuthPath, isProtectedPath } from './lib/auth/routeUtils';
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('accessToken')?.value;
@@ -32,8 +32,8 @@ export const config = {
   matcher: [
     '/login',
     '/register',
-    '/(auth)(.*)',
-    '/(protected)(.*)',
     '/dashboard',
+    '/(auth)/:path*',
+    '/(protected)/:path*',
   ],
 };

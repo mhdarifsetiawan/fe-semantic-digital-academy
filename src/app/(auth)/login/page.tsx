@@ -8,8 +8,11 @@ import Button from '@/components/ui/Button';
 import { CircleArrowRight, Mail, Lock } from 'lucide-react';
 import Link from 'next/link';
 import { login } from '@/services/auth';
+import API_ROUTES from '@/constants/apiRoutes';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export default function LoginPage() {
+    const { setAuthenticated } = useAuthStore();
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -50,11 +53,15 @@ export default function LoginPage() {
         }
 
         try {
-            console.log('Mulai Login')
+            console.log('[Login] Attempting login...');
             await login({ email, password });
-            console.log('Selesai Login')
-            setLoading(false)
-            router.push('/dashboard');
+            console.log('[Login] Login success');
+
+            setAuthenticated(true);
+            console.log('[Login] isAuthenticated set to true');
+
+            router.push(API_ROUTES.DASHBOARD);
+            console.log('[Login] Pushed to dashboard');
         } catch (err) {
             const error = err as any;
             setErrors({ general: error.response?.data?.message || 'Email atau password salah' });

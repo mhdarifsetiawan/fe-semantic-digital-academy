@@ -6,6 +6,7 @@ import { Lock, ShieldCheck } from 'lucide-react';
 import FormField from '@/components/ui/FormField';
 import Button from '@/components/ui/Button';
 import { resetPassword } from '@/services/auth';
+import API_ROUTES from '@/constants/apiRoutes';
 
 export default function ResetPasswordPage({ params }: { params: { token: string } }) {
     const router = useRouter();
@@ -37,7 +38,7 @@ export default function ResetPasswordPage({ params }: { params: { token: string 
         try {
             await resetPassword(token, password);
             setSuccess('Password berhasil direset. Redirect ke login...');
-            setTimeout(() => router.push('/login'), 3000);
+            setTimeout(() => router.push(API_ROUTES.LOGIN), 3000);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {
             setErrors({ password: 'Token tidak valid atau sudah kedaluwarsa' });

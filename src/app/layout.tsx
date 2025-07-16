@@ -1,31 +1,22 @@
-// src/app/layout.tsx
-import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+// app/layout.tsx
+import AuthProvider from '@/providers/AuthProvider';
 import './globals.css';
-// import Navbar from '@/components/ui/Navbar';
+import Navbar from '@/components/ui/Navbar';
+// import { AuthProvider } from '@/providers/AuthProvider';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
-
-export const metadata: Metadata = {
-  title: 'Digital Academy',
-  description: 'Learning platform',
+export const metadata = {
+  title: 'Semantic Digital Academy',
+  description: 'Belajar kapan saja, di mana saja',
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50`}>
-        {/* <Navbar /> */}
-        <main>{children}</main>
+    <html lang="id">
+      <body>
+        <AuthProvider> {/* ✅ PENTING */}
+          <Navbar />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,4 +1,4 @@
-import { getCurrentUser } from '@/lib/authh/getCurrentUser';
+import { getCurrentUser } from '@/lib/auth/getCurrentUser';
 import ClientDashboard from './ClientDashboard';
 
 export default async function DashboardPage() {

@@ -1,54 +1,56 @@
-'use client';
-
-import Button from '@/components/ui/Button';
-import { GraduationCap, Video, Lock } from 'lucide-react';
+// app/page.tsx
+import HomeHero from '@/components/home/HomeHero';
+import FeaturedCourses from '@/components/home/FeaturedCourses';
+import Testimonials from '@/components/home/Testimonials';
 
 export default function HomePage() {
+  const courses = [
+    {
+      id: 1,
+      image: 'https://source.unsplash.com/400x200/?coding',
+      title: 'Belajar JavaScript Dasar',
+      instructor: 'Andi Wijaya',
+      price: '149.000',
+      slug: 'javascript-dasar',
+    },
+    {
+      id: 2,
+      image: 'https://source.unsplash.com/400x200/?design',
+      title: 'Desain UI/UX untuk Pemula',
+      instructor: 'Rina Saputri',
+      price: '199.000',
+      slug: 'desain-uiux',
+    },
+    {
+      id: 3,
+      image: 'https://source.unsplash.com/400x200/?startup',
+      title: 'Membangun Produk Digital',
+      instructor: 'Agus Prasetyo',
+      price: '249.000',
+      slug: 'produk-digital',
+    },
+  ];
+
+  const testimonials = [
+    {
+      id: 1,
+      quote: 'Materi sangat mudah dipahami dan langsung bisa diterapkan di pekerjaan saya.',
+      name: 'Budi Santoso',
+      role: 'Web Developer',
+    },
+    {
+      id: 2,
+      quote: 'Instruktur ramah dan menjawab semua pertanyaan saya dengan jelas.',
+      name: 'Dewi Anggraini',
+      role: 'Graphic Designer',
+    },
+  ];
+
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-sky-100 to-blue-200 px-4 text-gray-800">
-      {/* Hero Section */}
-      <section className="text-center py-20 max-w-3xl">
-        <h1 className="text-4xl md:text-5xl font-bold mb-6">
-          Selamat datang di <span className="text-blue-700">Digital Academy</span>
-        </h1>
-        <p className="text-gray-700 mb-8 text-lg">
-          Belajar kapan saja dan di mana saja dengan kursus berkualitas tinggi.
-        </p>
-        <div className="flex justify-center gap-4">
-          <Button as="a" href="/login" variant="primary">
-            Masuk
-          </Button>
-          <Button as="a" href="/register" variant="outline">
-            Daftar Gratis
-          </Button>
-        </div>
-      </section>
-
-      {/* Fitur Section */}
-      <section className="w-full max-w-5xl px-4 py-12 grid md:grid-cols-3 gap-8 text-center">
-        <div className="bg-white rounded-lg p-6 shadow hover:shadow-md transition">
-          <GraduationCap className="mx-auto text-blue-600 mb-4" size={32} />
-          <h3 className="text-xl font-semibold text-gray-800 mb-2">Materi Berkualitas</h3>
-          <p className="text-gray-600 text-sm">Dibuat oleh mentor ahli dan berpengalaman di bidangnya.</p>
-        </div>
-
-        <div className="bg-white rounded-lg p-6 shadow hover:shadow-md transition">
-          <Video className="mx-auto text-blue-600 mb-4" size={32} />
-          <h3 className="text-xl font-semibold text-gray-800 mb-2">Video Interaktif</h3>
-          <p className="text-gray-600 text-sm">Pembelajaran dengan video yang mudah dipahami dan menarik.</p>
-        </div>
-
-        <div className="bg-white rounded-lg p-6 shadow hover:shadow-md transition">
-          <Lock className="mx-auto text-blue-600 mb-4" size={32} />
-          <h3 className="text-xl font-semibold text-gray-800 mb-2">Akses Aman</h3>
-          <p className="text-gray-600 text-sm">Login dengan sistem token & cookies untuk keamanan optimal.</p>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-6 text-sm text-gray-600 text-center">
-        &copy; {new Date().getFullYear()} Digital Academy. All rights reserved.
-      </footer>
-    </main>
+    <>
+      <HomeHero />
+      <FeaturedCourses courses={courses} />
+      <Testimonials items={testimonials} />
+    </>
   );
 }

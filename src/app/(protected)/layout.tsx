@@ -1,5 +1,5 @@
 // layout.tsx
-import { getCurrentUser } from '@/lib/authh/getCurrentUser';
+import { getCurrentUser } from '@/lib/auth/getCurrentUser';
 import { redirect } from 'next/navigation';
 import type { ReactNode } from 'react';
 

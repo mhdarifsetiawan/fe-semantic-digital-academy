@@ -1,8 +1,11 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import Button from '@/components/ui/Button';
 import { LogOut, Mail, UserCircle } from 'lucide-react';
+import { logout } from '@/services/auth';
+import { getMe } from '@/services/user';
+// import API_ROUTES from '@/constants/apiRoutes';
 
 type Props = {
   user: {
@@ -13,12 +16,17 @@ type Props = {
 };
 
 export default function ClientDashboard({ user }: Props) {
-  const router = useRouter();
+  // const router = useRouter();
 
   const handleLogout = async () => {
-    await fetch('/api/logout', { method: 'POST' });
-    router.push('/login');
+    await logout();
+    // router.push(API_ROUTES.LOGIN);
   };
+
+  const handleTesting = async () => {
+    const doGetMe = await getMe();
+    console.log('doGetMe: ', doGetMe)
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
@@ -40,6 +48,9 @@ export default function ClientDashboard({ user }: Props) {
                 </div>
             <Button onClick={handleLogout} iconLeft={<LogOut size={16} />} className="mt-4">
                 Logout
+            </Button>
+            <Button onClick={handleTesting} iconLeft={<LogOut size={16} />} className="mt-4">
+                Testing
             </Button>
       </div>
     </div>
