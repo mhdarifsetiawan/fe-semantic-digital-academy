@@ -5,12 +5,15 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X, User } from 'lucide-react';
 import API_ROUTES from '@/constants/apiRoutes';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const pathname = usePathname();
     const toggleMenu = () => setIsOpen(!isOpen);
+
+     // ✅ Ambil langsung dari Zustand
+    const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
     const navItems = [
         { label: 'Beranda', href: '/' },
@@ -19,9 +22,8 @@ export default function Navbar() {
     ];
 
     useEffect(() => {
-        const authFlag = localStorage.getItem('isAuthenticated');
-        setIsAuthenticated(authFlag === 'true');
-    }, [pathname]); // Re-check setiap pindah halaman
+        console.log('🔄 Auth berubah:', isAuthenticated);
+    }, [isAuthenticated]);
 
     return (
         <nav className="bg-white shadow-md px-4 py-3">

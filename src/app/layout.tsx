@@ -2,6 +2,7 @@
 import AuthProvider from '@/providers/AuthProvider';
 import './globals.css';
 import Navbar from '@/components/ui/Navbar';
+import ResetAuthOnMount from '@/components/auth/ResetAuthOnMount';
 // import { AuthProvider } from '@/providers/AuthProvider';
 
 export const metadata = {
@@ -13,7 +14,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="id">
       <body>
-        <AuthProvider> {/* ✅ PENTING */}
+        <AuthProvider>
+           <ResetAuthOnMount />
           <Navbar />
           {children}
         </AuthProvider>

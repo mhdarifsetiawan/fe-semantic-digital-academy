@@ -1,6 +1,7 @@
 import API_ROUTES from "@/constants/apiRoutes";
 import api from "@/lib/api";
 import { resetAuthClientSide } from "@/lib/auth/resetAuth";
+import { useAuthStore } from "@/store/useAuthStore";
 
 /**
  * Service untuk otentikasi
@@ -14,12 +15,14 @@ interface LoginCredentials {
 
 // Fungsi login yang lebih bersih
 export const login = async (credentials: LoginCredentials) => {
+    const { setAuthenticated } = useAuthStore.getState();
+
     try {
         const response = await api.post(API_ROUTES.LOGIN, credentials);
 
         // ✅ Simpan flag login di localStorage
         if (typeof window !== 'undefined') {
-            localStorage.setItem('isAuthenticated', 'true');
+            setAuthenticated(true);
         }
 
         return response.data;
@@ -28,7 +31,7 @@ export const login = async (credentials: LoginCredentials) => {
 
         // Pastikan flag login dibersihkan jika gagal
         if (typeof window !== 'undefined') {
-            localStorage.removeItem('isAuthenticated');
+            setAuthenticated(false);
         }
 
         throw error;
